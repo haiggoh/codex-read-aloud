@@ -1,4 +1,10 @@
-import { existsSync, mkdtempSync, writeFileSync } from "node:fs";
+import {
+  existsSync,
+  mkdirSync,
+  mkdtempSync,
+  utimesSync,
+  writeFileSync
+} from "node:fs";
 import { spawnSync } from "node:child_process";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -11,6 +17,10 @@ import {
   resolveMacOSVoice,
   speakText
 } from "../scripts/lib/read-aloud.mjs";
+import {
+  findLatestClaudeSessionFile,
+  getLatestClaudeAssistantMessage
+} from "../scripts/lib/claude-sessions.mjs";
 import {
   removeCodexReadAloudBlocks,
   restoreReadAloudNotify
@@ -167,4 +177,209 @@ test("restoreReadAloudNotify restores previous notify command", () => {
   const input = "model = \"gpt-5\"\nnotify = [\"/usr/bin/env\", \"node\", \"/tmp/codex-read-aloud-notify.mjs\"]\n";
   const output = restoreReadAloudNotify(input, ["/usr/bin/true", "turn-ended"]);
   assert.equal(output, "model = \"gpt-5\"\nnotify = [\"/usr/bin/true\", \"turn-ended\"]\n");
+});
+
+test("getLatestClaudeAssistantMessage returns final main-agent prose", () => {
+  const fixture = join(
+    import.meta.dirname,
+    "fixtures",
+    "claude-main-session.jsonl"
+  );
+
+  const message = getLatestClaudeAssistantMessage(fixture, {
+    includeCodeBlocks: false,
+    maxCharacters: 1000
+  });
+
+  assert.equal(message.rawText, "The inspection is complete.");
+  assert.equal(message.text, "The inspection is complete.");
+});
+
+test("getLatestClaudeAssistantMessage ignores sidechain responses", () => {
+  const fixture = join(
+    import.meta.dirname,
+    "fixtures",
+    "claude-sidechain-session.jsonl"
+  );
+
+  const message = getLatestClaudeAssistantMessage(fixture, {
+    includeCodeBlocks: false,
+    maxCharacters: 1000
+  });
+
+  assert.equal(message.rawText, "Main-agent response.");
+});
+
+test("getLatestClaudeAssistantMessage rejects an API-error ending", () => {
+  const fixture = join(
+    import.meta.dirname,
+    "fixtures",
+    "claude-api-error-session.jsonl"
+  );
+
+  const message = getLatestClaudeAssistantMessage(fixture, {
+    includeCodeBlocks: false,
+    maxCharacters: 1000
+  });
+
+  assert.equal(message, null);
+});
+
+test("findLatestClaudeSessionFile ignores nested subagent logs", () => {
+  const root = mkdtempSync(
+    join(tmpdir(), "claude-read-aloud-projects-")
+  );
+  const projectA = join(root, "project-a");
+  const projectB = join(root, "project-b");
+  const subagents = join(projectB, "subagents");
+
+  mkdirSync(projectA, { recursive: true });
+  mkdirSync(subagents, { recursive: true });
+
+  const olderMain = join(projectA, "older.jsonl");
+  const newerMain = join(projectB, "newer.jsonl");
+  const newestSubagent = join(subagents, "agent-newest.jsonl");
+
+  writeFileSync(olderMain, "{}\n");
+  writeFileSync(newerMain, "{}\n");
+  writeFileSync(newestSubagent, "{}\n");
+
+  const base = Date.now() / 1000;
+  utimesSync(olderMain, base - 30, base - 30);
+  utimesSync(newerMain, base - 20, base - 20);
+  utimesSync(newestSubagent, base - 10, base - 10);
+
+  assert.equal(
+    findLatestClaudeSessionFile(root),
+    newerMain
+  );
+});
+
+test("getLatestClaudeAssistantMessage rejects a prior answer after a newer unanswered prompt", () => {
+  const dir = mkdtempSync(
+    join(tmpdir(), "claude-read-aloud-unanswered-")
+  );
+  const session = join(dir, "session.jsonl");
+
+  writeFileSync(session, [
+    JSON.stringify({
+      type: "assistant",
+      isSidechain: false,
+      message: {
+        role: "assistant",
+        content: [
+          {
+            type: "text",
+            text: "Previous completed response."
+          }
+        ]
+      }
+    }),
+    JSON.stringify({
+      type: "user",
+      isSidechain: false,
+      message: {
+        role: "user",
+        content: "A newer unanswered prompt."
+      }
+    })
+  ].join("\n"));
+
+  const message = getLatestClaudeAssistantMessage(session, {
+    includeCodeBlocks: false,
+    maxCharacters: 1000
+  });
+
+  assert.equal(message, null);
+});
+
+test("getLatestClaudeAssistantMessage preserves text across non-text assistant metadata", () => {
+  const dir = mkdtempSync(
+    join(tmpdir(), "claude-read-aloud-metadata-")
+  );
+  const session = join(dir, "session.jsonl");
+
+  writeFileSync(session, [
+    JSON.stringify({
+      type: "assistant",
+      isSidechain: false,
+      message: {
+        role: "assistant",
+        content: [
+          {
+            type: "text",
+            text: "Completed response."
+          }
+        ]
+      }
+    }),
+    JSON.stringify({
+      type: "assistant",
+      isSidechain: false,
+      message: {
+        role: "assistant",
+        content: [
+          {
+            type: "thinking",
+            thinking: "not spoken"
+          }
+        ]
+      }
+    })
+  ].join("\n"));
+
+  const message = getLatestClaudeAssistantMessage(session, {
+    includeCodeBlocks: false,
+    maxCharacters: 1000
+  });
+
+  assert.equal(message.rawText, "Completed response.");
+});
+
+test("getLatestClaudeAssistantMessage rejects earlier prose when the final JSONL line is incomplete", () => {
+  const dir = mkdtempSync(
+    join(tmpdir(), "claude-read-aloud-incomplete-")
+  );
+  const session = join(dir, "session.jsonl");
+
+  writeFileSync(
+    session,
+    [
+      JSON.stringify({
+        type: "assistant",
+        isSidechain: false,
+        message: {
+          role: "assistant",
+          content: [
+            {
+              type: "text",
+              text: "Previous completed response."
+            }
+          ]
+        }
+      }),
+      '{"type":"assistant","message":'
+    ].join("\\n")
+  );
+
+  const message = getLatestClaudeAssistantMessage(session, {
+    includeCodeBlocks: false,
+    maxCharacters: 1000
+  });
+
+  assert.equal(message, null);
+});
+
+test("Claude latest-response command exists", () => {
+  assert.equal(
+    existsSync(
+      join(
+        import.meta.dirname,
+        "..",
+        "scripts",
+        "speak-latest-claude.mjs"
+      )
+    ),
+    true
+  );
 });

@@ -5,7 +5,8 @@ Codex Read Aloud is local-first.
 ## What It Reads
 
 - In Codex, it can read the newest assistant message from local Codex session JSONL files when you run `scripts/speak-latest-codex.mjs`.
-- In Claude Code, it speaks only text the agent explicitly passes to `scripts/speak-text.mjs`.
+- In Claude Code, it can speak text the agent explicitly passes to `scripts/speak-text.mjs`, or read the newest completed main-agent text response from Claude Code's existing local transcript when you explicitly run `scripts/speak-latest-claude.mjs`.
+- Claude latest-response mode registers no hook and creates no duplicate response cache.
 - It cleans Markdown before speech and omits fenced code blocks by default.
 
 ## What Leaves Your Machine

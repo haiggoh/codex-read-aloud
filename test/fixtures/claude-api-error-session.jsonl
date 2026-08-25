@@ -1,0 +1,2 @@
+{"type":"assistant","isSidechain":false,"message":{"role":"assistant","content":[{"type":"text","text":"Earlier completed response."}]},"sessionId":"session-main","uuid":"assistant-valid","timestamp":"2026-08-25T12:00:00.000Z"}
+{"type":"assistant","isSidechain":false,"isApiErrorMessage":true,"apiErrorStatus":500,"error":"server_error","message":{"role":"assistant","content":[{"type":"text","text":"API Error"}]},"sessionId":"session-main","uuid":"assistant-error","timestamp":"2026-08-25T12:00:01.000Z"}
