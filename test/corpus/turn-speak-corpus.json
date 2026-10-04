@@ -1,0 +1,77 @@
+[
+  {
+    "id": "prose-1",
+    "category": "explanatory",
+    "text": "The TurnSpeak architecture reads the newest completed main-agent response from Claude Code's existing local transcript. It registers no hook, creates no response cache, and does not require another Claude turn. The transcript adapter discovers JSONL files under the project directory, excludes subagent paths, and extracts only final prose responses."
+  },
+  {
+    "id": "prose-2",
+    "category": "explanatory",
+    "text": "When you invoke speak-last, the tool finds the most recently modified session file, scans backwards through its lines, and returns the last completed assistant message that contains actual text content rather than tool use or metadata. API errors and incomplete JSONL lines invalidate earlier candidates."
+  },
+  {
+    "id": "paths-1",
+    "category": "identifiers",
+    "text": "The transcript file is located at /Users/bra0002h/.claude/projects/-Users-bra0002h-ClaudeWorkspace-claude-turn-speak/abc123.jsonl and the model weights are stored in ~/.models/Kokoro-82M-bf16/ with the tokenizer config at ~/.models/Qwen3-TTS-12Hz-0.6B-CustomVoice-8bit/speech_tokenizer/config.json"
+  },
+  {
+    "id": "paths-2",
+    "category": "identifiers",
+    "text": "Environment variables include CLAUDE_CONFIG_DIR=/Users/bra0002h/.claude and CODEX_READ_ALOUD_DRY_RUN=1 for testing. The Python virtual environment lives at ~/.turn-speak/runtime/mlx-audio/ and the worker socket at ~/.turn-speak/runtime/worker.sock"
+  },
+  {
+    "id": "json-1",
+    "category": "technical-formats",
+    "text": "The API response contains {\"status\": \"ok\", \"data\": [{\"id\": 1, \"name\": \"oauth-token-v2\", \"scopes\": [\"read\", \"write\"]}], \"pagination\": {\"cursor\": \"abc123\", \"has_more\": false}} and the error format is {\"error\": {\"code\": 429, \"message\": \"rate limit exceeded\", \"retry_after\": 30}}"
+  },
+  {
+    "id": "yaml-1",
+    "category": "technical-formats",
+    "text": "Configuration uses YAML frontmatter: provider: mlx, mlxModel: kokoro, mlxVoice: af_heart, maxChunkCharacters: 2000. The plugin.json includes name, version, description, author, homepage, repository, license, and keywords fields."
+  },
+  {
+    "id": "sql-1",
+    "category": "technical-formats",
+    "text": "The query SELECT * FROM sessions WHERE project = 'claude-turn-speak' AND mtime > NOW() - INTERVAL '1 hour' ORDER BY mtime DESC LIMIT 10 returns the most recent session records for the current project."
+  },
+  {
+    "id": "versions-1",
+    "category": "technical-formats",
+    "text": "Version 0.2.0-rc.3 includes mlx-audio 0.5.7, mlx 0.32.3, huggingface-hub 1.33.0, and tokenizers 0.23.2. The Qwen3-TTS model at revision 049ef77fe8816b536193c0c25f9a214d17921282 is pinned in the acquisition catalogue."
+  },
+  {
+    "id": "headings-1",
+    "category": "structure",
+    "text": "## TurnSpeak Architecture\n\n### Transcript Adapter\nDiscovers session files, extracts completed turns.\n\n### Speech Preparation\nNormalizes Markdown, omits code blocks, chunks long text.\n\n### Providers\n- macOS say (default)\n- MLX local neural TTS\n- OpenAI TTS (optional)"
+  },
+  {
+    "id": "lists-1",
+    "category": "structure",
+    "text": "Key features:\n- No automatic speech\n- No hooks by default\n- No passive response cache\n- Privacy-first design\n- Offline playback after model download\n- Multiple provider support"
+  },
+  {
+    "id": "inline-code-1",
+    "category": "code-handling",
+    "text": "Use `npm install` and `git commit -m \"msg\"` to proceed. The `speak-last` command reads from `~/.claude/projects/` and the worker binds to `~/.turn-speak/runtime/worker.sock`. Omitted fenced code block:\n```javascript\nfunction generateAudio(text, model, voice) {\n  return model.generate(text, { voice });\n}\n```"
+  },
+  {
+    "id": "debugging-1",
+    "category": "debugging",
+    "text": "Error: Connection refused at tcp://localhost:4142 — check proxy, then retry with --verbose flag. HTTP 429 Too Many Requests, retry after 30s. Warning: deprecated API endpoint /v1/completions will be removed in v2.0.0."
+  },
+  {
+    "id": "long-1",
+    "category": "long-turn",
+    "text": "The TurnSpeak project implements a hookless transcript readback system for Claude Code. Unlike approaches that register Stop hooks to capture responses in real-time, TurnSpeak reads from the existing local transcript JSONL files that Claude Code already writes. This preserves the upstream project's privacy model where nothing is spoken automatically. The transcript adapter discovers the most recently modified main-session file under ~/.claude/projects/, excluding any nested subagents directories. It then parses the JSONL lines in reverse chronological order, looking for assistant messages that contain actual text content. Messages with tool_use are skipped because they represent intermediate progress rather than final responses. Messages marked as API errors or sidechain subagents are also excluded. The most recent valid completed response is then cleaned of Markdown formatting - headings become plain text, links lose their URLs, inline code loses backticks, and fenced code blocks are replaced with 'Code block omitted.' The cleaned text is then passed to the selected speech provider. For macOS say, the text is streamed via stdin to avoid exposing it in process arguments. For MLX, the text is sent over a Unix domain socket to a persistent Python worker that keeps the model warm in memory. The worker uses the unified generate_audio API from mlx-audio which supports Kokoro, Qwen3-TTS, Chatterbox, and other models through a single interface. This architecture means no additional Claude inference is needed, no network calls occur in the default path, and the system works completely offline after the initial model download."
+  },
+  {
+    "id": "numbers-1",
+    "category": "numbers-errors",
+    "text": "HTTP 429, retry after 30s. Memory usage: 2.4GB/8GB peak 3.2GB. Latency: 1.23s cold start, 0.15s warm TTFA. Real-time factor: 0.12x for Kokoro, 0.64x for Qwen3 0.6B, 0.65x for Qwen3 1.7B, 1.21x for Chatterbox. Model sizes: 389MB, 1.97GB, 4.52GB, 708MB respectively. Version 0.2.0-dev build 20261004."
+  },
+  {
+    "id": "punctuation-2",
+    "category": "debugging",
+    "text": "The config.json at ~/Library/Application Support/codex-read-aloud/config.json contains: {\"provider\": \"mlx\", \"mlxModel\": \"kokoro\", \"mlxVoice\": \"af_heart\", \"maxCharacters\": 3000, \"includeCodeBlocks\": false, \"stopPrevious\": true}. Note the nested path with spaces and special characters."
+  }
+]

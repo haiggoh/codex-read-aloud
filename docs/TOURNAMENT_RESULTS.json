@@ -1,0 +1,540 @@
+{
+  "generatedAt": "2026-10-04T20:54:25.446Z",
+  "corpusVersion": "1.0",
+  "models": [
+    {
+      "model": "macos-shelley",
+      "name": "macOS Shelley",
+      "provider": "macos",
+      "items": [
+        {
+          "corpusId": "prose-1",
+          "category": "explanatory",
+          "outputFile": "/Users/bra0002h/ClaudeWorkspace/claude-turn-speak/docs/tournament-audio/macos-shelley_prose-1.wav",
+          "durationMs": 0,
+          "cached": true
+        },
+        {
+          "corpusId": "prose-2",
+          "category": "explanatory",
+          "outputFile": "/Users/bra0002h/ClaudeWorkspace/claude-turn-speak/docs/tournament-audio/macos-shelley_prose-2.wav",
+          "durationMs": 0,
+          "cached": true
+        },
+        {
+          "corpusId": "paths-1",
+          "category": "identifiers",
+          "outputFile": "/Users/bra0002h/ClaudeWorkspace/claude-turn-speak/docs/tournament-audio/macos-shelley_paths-1.wav",
+          "durationMs": 0,
+          "cached": true
+        },
+        {
+          "corpusId": "paths-2",
+          "category": "identifiers",
+          "outputFile": "/Users/bra0002h/ClaudeWorkspace/claude-turn-speak/docs/tournament-audio/macos-shelley_paths-2.wav",
+          "durationMs": 0,
+          "cached": true
+        },
+        {
+          "corpusId": "json-1",
+          "category": "technical-formats",
+          "outputFile": "/Users/bra0002h/ClaudeWorkspace/claude-turn-speak/docs/tournament-audio/macos-shelley_json-1.wav",
+          "durationMs": 0,
+          "cached": true
+        },
+        {
+          "corpusId": "yaml-1",
+          "category": "technical-formats",
+          "outputFile": "/Users/bra0002h/ClaudeWorkspace/claude-turn-speak/docs/tournament-audio/macos-shelley_yaml-1.wav",
+          "durationMs": 0,
+          "cached": true
+        },
+        {
+          "corpusId": "sql-1",
+          "category": "technical-formats",
+          "outputFile": "/Users/bra0002h/ClaudeWorkspace/claude-turn-speak/docs/tournament-audio/macos-shelley_sql-1.wav",
+          "durationMs": 0,
+          "cached": true
+        },
+        {
+          "corpusId": "versions-1",
+          "category": "technical-formats",
+          "outputFile": "/Users/bra0002h/ClaudeWorkspace/claude-turn-speak/docs/tournament-audio/macos-shelley_versions-1.wav",
+          "durationMs": 0,
+          "cached": true
+        },
+        {
+          "corpusId": "headings-1",
+          "category": "structure",
+          "outputFile": "/Users/bra0002h/ClaudeWorkspace/claude-turn-speak/docs/tournament-audio/macos-shelley_headings-1.wav",
+          "durationMs": 0,
+          "cached": true
+        },
+        {
+          "corpusId": "lists-1",
+          "category": "structure",
+          "outputFile": "/Users/bra0002h/ClaudeWorkspace/claude-turn-speak/docs/tournament-audio/macos-shelley_lists-1.wav",
+          "durationMs": 0,
+          "cached": true
+        },
+        {
+          "corpusId": "inline-code-1",
+          "category": "code-handling",
+          "outputFile": "/Users/bra0002h/ClaudeWorkspace/claude-turn-speak/docs/tournament-audio/macos-shelley_inline-code-1.wav",
+          "durationMs": 0,
+          "cached": true
+        },
+        {
+          "corpusId": "debugging-1",
+          "category": "debugging",
+          "outputFile": "/Users/bra0002h/ClaudeWorkspace/claude-turn-speak/docs/tournament-audio/macos-shelley_debugging-1.wav",
+          "durationMs": 0,
+          "cached": true
+        },
+        {
+          "corpusId": "long-1",
+          "category": "long-turn",
+          "outputFile": "/Users/bra0002h/ClaudeWorkspace/claude-turn-speak/docs/tournament-audio/macos-shelley_long-1.wav",
+          "durationMs": 0,
+          "cached": true
+        },
+        {
+          "corpusId": "numbers-1",
+          "category": "numbers-errors",
+          "outputFile": "/Users/bra0002h/ClaudeWorkspace/claude-turn-speak/docs/tournament-audio/macos-shelley_numbers-1.wav",
+          "durationMs": 0,
+          "cached": true
+        },
+        {
+          "corpusId": "punctuation-2",
+          "category": "debugging",
+          "outputFile": "/Users/bra0002h/ClaudeWorkspace/claude-turn-speak/docs/tournament-audio/macos-shelley_punctuation-2.wav",
+          "durationMs": 0,
+          "cached": true
+        }
+      ]
+    },
+    {
+      "model": "kokoro",
+      "name": "Kokoro 82M BF16",
+      "provider": "mlx",
+      "items": [
+        {
+          "corpusId": "prose-1",
+          "category": "explanatory",
+          "outputFile": "/Users/bra0002h/ClaudeWorkspace/claude-turn-speak/docs/tournament-audio/kokoro_prose-1.wav",
+          "durationMs": 0,
+          "cached": true
+        },
+        {
+          "corpusId": "prose-2",
+          "category": "explanatory",
+          "outputFile": "/Users/bra0002h/ClaudeWorkspace/claude-turn-speak/docs/tournament-audio/kokoro_prose-2.wav",
+          "durationMs": 0,
+          "cached": true
+        },
+        {
+          "corpusId": "paths-1",
+          "category": "identifiers",
+          "outputFile": "/Users/bra0002h/ClaudeWorkspace/claude-turn-speak/docs/tournament-audio/kokoro_paths-1.wav",
+          "durationMs": 0,
+          "cached": true
+        },
+        {
+          "corpusId": "paths-2",
+          "category": "identifiers",
+          "outputFile": "/Users/bra0002h/ClaudeWorkspace/claude-turn-speak/docs/tournament-audio/kokoro_paths-2.wav",
+          "durationMs": 0,
+          "cached": true
+        },
+        {
+          "corpusId": "json-1",
+          "category": "technical-formats",
+          "outputFile": "/Users/bra0002h/ClaudeWorkspace/claude-turn-speak/docs/tournament-audio/kokoro_json-1.wav",
+          "durationMs": 0,
+          "cached": true
+        },
+        {
+          "corpusId": "yaml-1",
+          "category": "technical-formats",
+          "outputFile": "/Users/bra0002h/ClaudeWorkspace/claude-turn-speak/docs/tournament-audio/kokoro_yaml-1.wav",
+          "durationMs": 0,
+          "cached": true
+        },
+        {
+          "corpusId": "sql-1",
+          "category": "technical-formats",
+          "outputFile": "/Users/bra0002h/ClaudeWorkspace/claude-turn-speak/docs/tournament-audio/kokoro_sql-1.wav",
+          "durationMs": 0,
+          "cached": true
+        },
+        {
+          "corpusId": "versions-1",
+          "category": "technical-formats",
+          "outputFile": "/Users/bra0002h/ClaudeWorkspace/claude-turn-speak/docs/tournament-audio/kokoro_versions-1.wav",
+          "durationMs": 0,
+          "cached": true
+        },
+        {
+          "corpusId": "headings-1",
+          "category": "structure",
+          "outputFile": "/Users/bra0002h/ClaudeWorkspace/claude-turn-speak/docs/tournament-audio/kokoro_headings-1.wav",
+          "durationMs": 1598,
+          "cached": false
+        },
+        {
+          "corpusId": "lists-1",
+          "category": "structure",
+          "outputFile": "/Users/bra0002h/ClaudeWorkspace/claude-turn-speak/docs/tournament-audio/kokoro_lists-1.wav",
+          "durationMs": 425,
+          "cached": false
+        },
+        {
+          "corpusId": "inline-code-1",
+          "category": "code-handling",
+          "outputFile": "/Users/bra0002h/ClaudeWorkspace/claude-turn-speak/docs/tournament-audio/kokoro_inline-code-1.wav",
+          "durationMs": 626,
+          "cached": false
+        },
+        {
+          "corpusId": "debugging-1",
+          "category": "debugging",
+          "outputFile": "/Users/bra0002h/ClaudeWorkspace/claude-turn-speak/docs/tournament-audio/kokoro_debugging-1.wav",
+          "durationMs": 469,
+          "cached": false
+        },
+        {
+          "corpusId": "long-1",
+          "category": "long-turn",
+          "outputFile": "/Users/bra0002h/ClaudeWorkspace/claude-turn-speak/docs/tournament-audio/kokoro_long-1.wav",
+          "durationMs": 2225,
+          "cached": false
+        },
+        {
+          "corpusId": "numbers-1",
+          "category": "numbers-errors",
+          "outputFile": "/Users/bra0002h/ClaudeWorkspace/claude-turn-speak/docs/tournament-audio/kokoro_numbers-1.wav",
+          "durationMs": 906,
+          "cached": false
+        },
+        {
+          "corpusId": "punctuation-2",
+          "category": "debugging",
+          "outputFile": "/Users/bra0002h/ClaudeWorkspace/claude-turn-speak/docs/tournament-audio/kokoro_punctuation-2.wav",
+          "durationMs": 455,
+          "cached": false
+        }
+      ]
+    },
+    {
+      "model": "qwen3-06b",
+      "name": "Qwen3-TTS 0.6B 8-bit",
+      "provider": "mlx",
+      "items": [
+        {
+          "corpusId": "prose-1",
+          "category": "explanatory",
+          "outputFile": "/Users/bra0002h/ClaudeWorkspace/claude-turn-speak/docs/tournament-audio/qwen3-06b_prose-1.wav",
+          "durationMs": 8280,
+          "cached": false
+        },
+        {
+          "corpusId": "prose-2",
+          "category": "explanatory",
+          "outputFile": "/Users/bra0002h/ClaudeWorkspace/claude-turn-speak/docs/tournament-audio/qwen3-06b_prose-2.wav",
+          "durationMs": 4340,
+          "cached": false
+        },
+        {
+          "corpusId": "paths-1",
+          "category": "identifiers",
+          "outputFile": "/Users/bra0002h/ClaudeWorkspace/claude-turn-speak/docs/tournament-audio/qwen3-06b_paths-1.wav",
+          "durationMs": 7188,
+          "cached": false
+        },
+        {
+          "corpusId": "paths-2",
+          "category": "identifiers",
+          "outputFile": "/Users/bra0002h/ClaudeWorkspace/claude-turn-speak/docs/tournament-audio/qwen3-06b_paths-2.wav",
+          "durationMs": 14926,
+          "cached": false
+        },
+        {
+          "corpusId": "json-1",
+          "category": "technical-formats",
+          "outputFile": "/Users/bra0002h/ClaudeWorkspace/claude-turn-speak/docs/tournament-audio/qwen3-06b_json-1.wav",
+          "durationMs": 17011,
+          "cached": false
+        },
+        {
+          "corpusId": "yaml-1",
+          "category": "technical-formats",
+          "outputFile": "/Users/bra0002h/ClaudeWorkspace/claude-turn-speak/docs/tournament-audio/qwen3-06b_yaml-1.wav",
+          "durationMs": 4702,
+          "cached": false
+        },
+        {
+          "corpusId": "sql-1",
+          "category": "technical-formats",
+          "outputFile": "/Users/bra0002h/ClaudeWorkspace/claude-turn-speak/docs/tournament-audio/qwen3-06b_sql-1.wav",
+          "durationMs": 3380,
+          "cached": false
+        },
+        {
+          "corpusId": "versions-1",
+          "category": "technical-formats",
+          "outputFile": "/Users/bra0002h/ClaudeWorkspace/claude-turn-speak/docs/tournament-audio/qwen3-06b_versions-1.wav",
+          "durationMs": 8873,
+          "cached": false
+        },
+        {
+          "corpusId": "headings-1",
+          "category": "structure",
+          "outputFile": "/Users/bra0002h/ClaudeWorkspace/claude-turn-speak/docs/tournament-audio/qwen3-06b_headings-1.wav",
+          "durationMs": 4494,
+          "cached": false
+        },
+        {
+          "corpusId": "lists-1",
+          "category": "structure",
+          "outputFile": "/Users/bra0002h/ClaudeWorkspace/claude-turn-speak/docs/tournament-audio/qwen3-06b_lists-1.wav",
+          "durationMs": 2676,
+          "cached": false
+        },
+        {
+          "corpusId": "inline-code-1",
+          "category": "code-handling",
+          "outputFile": "/Users/bra0002h/ClaudeWorkspace/claude-turn-speak/docs/tournament-audio/qwen3-06b_inline-code-1.wav",
+          "durationMs": 4520,
+          "cached": false
+        },
+        {
+          "corpusId": "debugging-1",
+          "category": "debugging",
+          "outputFile": "/Users/bra0002h/ClaudeWorkspace/claude-turn-speak/docs/tournament-audio/qwen3-06b_debugging-1.wav",
+          "durationMs": 5985,
+          "cached": false
+        },
+        {
+          "corpusId": "long-1",
+          "category": "long-turn",
+          "outputFile": "/Users/bra0002h/ClaudeWorkspace/claude-turn-speak/docs/tournament-audio/qwen3-06b_long-1.wav",
+          "durationMs": 17276,
+          "cached": false
+        },
+        {
+          "corpusId": "numbers-1",
+          "category": "numbers-errors",
+          "outputFile": "/Users/bra0002h/ClaudeWorkspace/claude-turn-speak/docs/tournament-audio/qwen3-06b_numbers-1.wav",
+          "durationMs": 4405,
+          "cached": false
+        },
+        {
+          "corpusId": "punctuation-2",
+          "category": "debugging",
+          "outputFile": "/Users/bra0002h/ClaudeWorkspace/claude-turn-speak/docs/tournament-audio/qwen3-06b_punctuation-2.wav",
+          "durationMs": 5386,
+          "cached": false
+        }
+      ]
+    },
+    {
+      "model": "qwen3-17b",
+      "name": "Qwen3-TTS 1.7B BF16",
+      "provider": "mlx",
+      "items": [
+        {
+          "corpusId": "prose-1",
+          "category": "explanatory",
+          "outputFile": "/Users/bra0002h/ClaudeWorkspace/claude-turn-speak/docs/tournament-audio/qwen3-17b_prose-1.wav",
+          "durationMs": 8386,
+          "cached": false
+        },
+        {
+          "corpusId": "prose-2",
+          "category": "explanatory",
+          "outputFile": "/Users/bra0002h/ClaudeWorkspace/claude-turn-speak/docs/tournament-audio/qwen3-17b_prose-2.wav",
+          "durationMs": 6342,
+          "cached": false
+        },
+        {
+          "corpusId": "paths-1",
+          "category": "identifiers",
+          "outputFile": "/Users/bra0002h/ClaudeWorkspace/claude-turn-speak/docs/tournament-audio/qwen3-17b_paths-1.wav",
+          "durationMs": 14377,
+          "cached": false
+        },
+        {
+          "corpusId": "paths-2",
+          "category": "identifiers",
+          "outputFile": "/Users/bra0002h/ClaudeWorkspace/claude-turn-speak/docs/tournament-audio/qwen3-17b_paths-2.wav",
+          "durationMs": 23114,
+          "cached": false
+        },
+        {
+          "corpusId": "json-1",
+          "category": "technical-formats",
+          "error": "MLX generation failed: Socket error: connect ENOENT /Users/bra0002h/.turn-speak/runtime/worker.sock",
+          "durationMs": 0
+        },
+        {
+          "corpusId": "yaml-1",
+          "category": "technical-formats",
+          "error": "MLX generation failed: Socket error: connect ENOENT /Users/bra0002h/.turn-speak/runtime/worker.sock",
+          "durationMs": 0
+        },
+        {
+          "corpusId": "sql-1",
+          "category": "technical-formats",
+          "error": "MLX generation failed: Socket error: connect ENOENT /Users/bra0002h/.turn-speak/runtime/worker.sock",
+          "durationMs": 0
+        },
+        {
+          "corpusId": "versions-1",
+          "category": "technical-formats",
+          "error": "MLX generation failed: Socket error: connect ENOENT /Users/bra0002h/.turn-speak/runtime/worker.sock",
+          "durationMs": 1
+        },
+        {
+          "corpusId": "headings-1",
+          "category": "structure",
+          "error": "MLX generation failed: Socket error: connect ENOENT /Users/bra0002h/.turn-speak/runtime/worker.sock",
+          "durationMs": 0
+        },
+        {
+          "corpusId": "lists-1",
+          "category": "structure",
+          "error": "MLX generation failed: Socket error: connect ENOENT /Users/bra0002h/.turn-speak/runtime/worker.sock",
+          "durationMs": 0
+        },
+        {
+          "corpusId": "inline-code-1",
+          "category": "code-handling",
+          "error": "MLX generation failed: Socket error: connect ENOENT /Users/bra0002h/.turn-speak/runtime/worker.sock",
+          "durationMs": 0
+        },
+        {
+          "corpusId": "debugging-1",
+          "category": "debugging",
+          "error": "MLX generation failed: Socket error: connect ENOENT /Users/bra0002h/.turn-speak/runtime/worker.sock",
+          "durationMs": 0
+        },
+        {
+          "corpusId": "long-1",
+          "category": "long-turn",
+          "error": "MLX generation failed: Socket error: connect ENOENT /Users/bra0002h/.turn-speak/runtime/worker.sock",
+          "durationMs": 0
+        },
+        {
+          "corpusId": "numbers-1",
+          "category": "numbers-errors",
+          "error": "MLX generation failed: Socket error: connect ENOENT /Users/bra0002h/.turn-speak/runtime/worker.sock",
+          "durationMs": 0
+        },
+        {
+          "corpusId": "punctuation-2",
+          "category": "debugging",
+          "error": "MLX generation failed: Socket error: connect ENOENT /Users/bra0002h/.turn-speak/runtime/worker.sock",
+          "durationMs": 0
+        }
+      ]
+    },
+    {
+      "model": "chatterbox",
+      "name": "Chatterbox Turbo 8-bit",
+      "provider": "mlx",
+      "items": [
+        {
+          "corpusId": "prose-1",
+          "category": "explanatory",
+          "error": "MLX generation failed: Socket error: connect ENOENT /Users/bra0002h/.turn-speak/runtime/worker.sock",
+          "durationMs": 0
+        },
+        {
+          "corpusId": "prose-2",
+          "category": "explanatory",
+          "error": "MLX generation failed: Socket error: connect ENOENT /Users/bra0002h/.turn-speak/runtime/worker.sock",
+          "durationMs": 0
+        },
+        {
+          "corpusId": "paths-1",
+          "category": "identifiers",
+          "error": "MLX generation failed: Socket error: connect ENOENT /Users/bra0002h/.turn-speak/runtime/worker.sock",
+          "durationMs": 0
+        },
+        {
+          "corpusId": "paths-2",
+          "category": "identifiers",
+          "error": "MLX generation failed: Socket error: connect ENOENT /Users/bra0002h/.turn-speak/runtime/worker.sock",
+          "durationMs": 0
+        },
+        {
+          "corpusId": "json-1",
+          "category": "technical-formats",
+          "error": "MLX generation failed: Socket error: connect ENOENT /Users/bra0002h/.turn-speak/runtime/worker.sock",
+          "durationMs": 0
+        },
+        {
+          "corpusId": "yaml-1",
+          "category": "technical-formats",
+          "error": "MLX generation failed: Socket error: connect ENOENT /Users/bra0002h/.turn-speak/runtime/worker.sock",
+          "durationMs": 1
+        },
+        {
+          "corpusId": "sql-1",
+          "category": "technical-formats",
+          "error": "MLX generation failed: Socket error: connect ENOENT /Users/bra0002h/.turn-speak/runtime/worker.sock",
+          "durationMs": 0
+        },
+        {
+          "corpusId": "versions-1",
+          "category": "technical-formats",
+          "error": "MLX generation failed: Socket error: connect ENOENT /Users/bra0002h/.turn-speak/runtime/worker.sock",
+          "durationMs": 0
+        },
+        {
+          "corpusId": "headings-1",
+          "category": "structure",
+          "error": "MLX generation failed: Socket error: connect ENOENT /Users/bra0002h/.turn-speak/runtime/worker.sock",
+          "durationMs": 0
+        },
+        {
+          "corpusId": "lists-1",
+          "category": "structure",
+          "error": "MLX generation failed: Socket error: connect ENOENT /Users/bra0002h/.turn-speak/runtime/worker.sock",
+          "durationMs": 0
+        },
+        {
+          "corpusId": "inline-code-1",
+          "category": "code-handling",
+          "error": "MLX generation failed: Socket error: connect ENOENT /Users/bra0002h/.turn-speak/runtime/worker.sock",
+          "durationMs": 0
+        },
+        {
+          "corpusId": "debugging-1",
+          "category": "debugging",
+          "error": "MLX generation failed: Socket error: connect ENOENT /Users/bra0002h/.turn-speak/runtime/worker.sock",
+          "durationMs": 0
+        },
+        {
+          "corpusId": "long-1",
+          "category": "long-turn",
+          "error": "MLX generation failed: Socket error: connect ENOENT /Users/bra0002h/.turn-speak/runtime/worker.sock",
+          "durationMs": 0
+        },
+        {
+          "corpusId": "numbers-1",
+          "category": "numbers-errors",
+          "error": "MLX generation failed: Socket error: connect ENOENT /Users/bra0002h/.turn-speak/runtime/worker.sock",
+          "durationMs": 0
+        },
+        {
+          "corpusId": "punctuation-2",
+          "category": "debugging",
+          "error": "MLX generation failed: Socket error: connect ENOENT /Users/bra0002h/.turn-speak/runtime/worker.sock",
+          "durationMs": 0
+        }
+      ]
+    }
+  ]
+}

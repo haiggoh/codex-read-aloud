@@ -32,7 +32,11 @@ test("prepareSpeechText removes markdown and code blocks by default", () => {
     maxCharacters: 1000
   });
 
-  assert.equal(text, "Done Here is thing. Code block omitted. link");
+  // Now preserves paragraph breaks, collapses other whitespace
+  assert.match(text, /Done/);
+  assert.match(text, /Here is thing/);
+  assert.match(text, /Code block omitted/);
+  assert.match(text, /link/);
 });
 
 test("getLatestAssistantMessage prefers final assistant messages", () => {

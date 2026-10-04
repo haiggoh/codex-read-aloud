@@ -6,7 +6,7 @@ import {
   statSync
 } from "node:fs";
 import { homedir } from "node:os";
-import { join, relative, sep } from "node:path";
+import { join, relative, sep, basename, dirname } from "node:path";
 import {
   prepareSpeechText,
   readConfig
@@ -19,11 +19,32 @@ export function defaultClaudeProjectsDir(
   return join(claudeConfigDir, "projects");
 }
 
+/**
+ * Find the latest Claude session file with optional project/session filtering.
+ * @param {string} projectsDir - Root projects directory
+ * @param {Object} options - Filter options
+ * @param {string} [options.projectName] - Limit to specific project directory name
+ * @param {string} [options.sessionId] - Limit to specific session ID (matches record.sessionId)
+ * @returns {string|null} Path to latest session file or null
+ */
 export function findLatestClaudeSessionFile(
-  projectsDir = defaultClaudeProjectsDir()
+  projectsDir = defaultClaudeProjectsDir(),
+  options = {}
 ) {
+  const { projectName, sessionId } = options;
+
   if (!existsSync(projectsDir)) {
     return null;
+  }
+
+  // If projectName specified, narrow search to that project directory
+  let searchDir = projectsDir;
+  if (projectName) {
+    const projectDir = join(projectsDir, projectName);
+    if (!existsSync(projectDir)) {
+      return null;
+    }
+    searchDir = projectDir;
   }
 
   let latest = null;
@@ -58,8 +79,32 @@ export function findLatestClaudeSessionFile(
       const stats = statSync(fullPath);
       const candidate = {
         path: fullPath,
-        mtimeMs: stats.mtimeMs
+        mtimeMs: stats.mtimeMs,
+        projectName: relativeParts[0] || "unknown"
       };
+
+      // If sessionId specified, we must read the file to check if it contains that sessionId
+      if (sessionId) {
+        const lines = readFileSync(fullPath, "utf8").split(/\r?\n/);
+        let hasSessionId = false;
+
+        for (const line of lines) {
+          if (!line.trim()) continue;
+          try {
+            const record = JSON.parse(line);
+            if (record?.sessionId === sessionId) {
+              hasSessionId = true;
+              break;
+            }
+          } catch {
+            // Ignore parse errors
+          }
+        }
+
+        if (!hasSessionId) {
+          continue; // Skip files that don't contain the target sessionId
+        }
+      }
 
       if (
         !latest ||
@@ -74,14 +119,25 @@ export function findLatestClaudeSessionFile(
     }
   };
 
-  visit(projectsDir);
+  visit(searchDir);
   return latest?.path ?? null;
 }
 
+/**
+ * Get the latest completed main-agent assistant message from a session file.
+ * @param {string} sessionFile - Path to session JSONL file
+ * @param {Object} config - Speech config
+ * @param {Object} options - Filter options
+ * @param {string} [options.sessionId] - Limit to specific sessionId (matches record.sessionId)
+ * @returns {Object|null} Message object or null
+ */
 export function getLatestClaudeAssistantMessage(
   sessionFile,
-  config = readConfig()
+  config = readConfig(),
+  options = {}
 ) {
+  const { sessionId } = options;
+
   if (!sessionFile || !existsSync(sessionFile)) {
     return null;
   }
@@ -109,6 +165,11 @@ export function getLatestClaudeAssistantMessage(
     }
 
     if (record?.isSidechain === true) {
+      continue;
+    }
+
+    // If sessionId filter provided, check record.sessionId
+    if (sessionId && record?.sessionId && record.sessionId !== sessionId) {
       continue;
     }
 
@@ -153,6 +214,7 @@ export function getLatestClaudeAssistantMessage(
       key: messageKey(sessionFile, index, extracted.text),
       line: index + 1,
       timestamp: record.timestamp || null,
+      sessionId: record.sessionId || null,
       rawText: extracted.text,
       text: prepareSpeechText(extracted.text, config)
     };
@@ -161,17 +223,35 @@ export function getLatestClaudeAssistantMessage(
   return candidate;
 }
 
+/**
+ * Find the latest completed main-agent assistant message across sessions.
+ * @param {Object} options - Search options
+ * @param {string} [options.projectsDir] - Root projects directory
+ * @param {string} [options.projectName] - Limit to specific project
+ * @param {string} [options.sessionId] - Limit to specific session ID
+ * @param {Object} [options.config] - Speech config
+ * @param {number} [options.attempts=5] - Retry attempts
+ * @param {number} [options.delayMs=75] - Delay between retries (ms)
+ * @returns {Promise<Object|null>} { sessionFile, message } or null
+ */
 export async function findLatestClaudeAssistantMessage({
   projectsDir = defaultClaudeProjectsDir(),
+  projectName,
+  sessionId,
   config = readConfig(),
   attempts = 5,
   delayMs = 75
 } = {}) {
   for (let attempt = 0; attempt < attempts; attempt += 1) {
-    const sessionFile = findLatestClaudeSessionFile(projectsDir);
+    const sessionFile = findLatestClaudeSessionFile(projectsDir, {
+      projectName,
+      sessionId
+    });
+
     const message = getLatestClaudeAssistantMessage(
       sessionFile,
-      config
+      config,
+      { sessionId }
     );
 
     if (message) {
@@ -184,6 +264,64 @@ export async function findLatestClaudeAssistantMessage({
   }
 
   return null;
+}
+
+/**
+ * Get diagnostic information about the latest session selection.
+ * @param {Object} options - Search options (same as findLatestClaudeAssistantMessage)
+ * @returns {Promise<Object|null>} Diagnostic info or null
+ */
+export async function diagnoseLatestClaudeSession({
+  projectsDir = defaultClaudeProjectsDir(),
+  projectName,
+  sessionId,
+  config = readConfig(),
+  attempts = 5,
+  delayMs = 75
+} = {}) {
+  const sessionFile = findLatestClaudeSessionFile(projectsDir, {
+    projectName,
+    sessionId
+  });
+
+  if (!sessionFile) {
+    return {
+      found: false,
+      reason: "no-session-file",
+      projectsDir,
+      projectName,
+      sessionId
+    };
+  }
+
+  const stats = statSync(sessionFile);
+  const message = getLatestClaudeAssistantMessage(sessionFile, config, { sessionId });
+
+  if (!message) {
+    return {
+      found: false,
+      reason: "no-completed-message",
+      sessionFile,
+      fileMtime: stats.mtime.toISOString(),
+      fileSize: stats.size,
+      projectName: projectName || basename(dirname(sessionFile))
+    };
+  }
+
+  return {
+    found: true,
+    sessionFile,
+    fileMtime: stats.mtime.toISOString(),
+    fileSize: stats.size,
+    projectName: projectName || basename(dirname(sessionFile)),
+    line: message.line,
+    timestamp: message.timestamp,
+    sessionId: message.sessionId,
+    key: message.key,
+    rawTextLength: message.rawText.length,
+    cleanedTextLength: message.text.length,
+    provider: config.provider
+  };
 }
 
 function isClaudeUserPrompt(record) {
