@@ -13,9 +13,9 @@ const result = spawnSync("security", [
   "add-generic-password",
   "-U",
   "-a",
-  "codex-read-aloud",
+  "claude-turn-speak",
   "-s",
-  "codex-read-aloud-openai-api-key",
+  "claude-turn-speak-openai-api-key",
   "-w",
   key.trim()
 ], {
@@ -28,7 +28,7 @@ if (result.status !== 0) {
   process.exit(result.status || 1);
 }
 
-process.stdout.write("Stored OpenAI API key in macOS Keychain for Codex Read Aloud.\n");
+process.stdout.write("Stored OpenAI API key in macOS Keychain for Claude TurnSpeak.\n");
 
 function readKeyFromPrompt() {
   if (!process.stdin.isTTY) {

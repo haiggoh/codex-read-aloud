@@ -1,0 +1,2 @@
+{"type":"assistant","isSidechain":false,"message":{"role":"assistant","content":[{"type":"text","text":"Main-agent response."}]},"sessionId":"session-main","uuid":"assistant-main","timestamp":"2026-08-25T12:00:00.000Z"}
+{"type":"assistant","isSidechain":true,"message":{"role":"assistant","content":[{"type":"text","text":"Subagent response."}]},"sessionId":"session-main","uuid":"assistant-sidechain","timestamp":"2026-08-25T12:00:01.000Z"}

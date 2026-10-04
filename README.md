@@ -1,112 +1,126 @@
-# Codex Read Aloud
+# Claude TurnSpeak
 
-Read Codex and Claude Code replies aloud on demand on macOS.
+Read Claude Code replies aloud on demand on macOS.
 
-Codex Read Aloud is for people who can dictate prompts but want the agent to speak back when asked. It does not auto-read every chat. It uses built-in macOS voices by default and can use OpenAI TTS for a much more natural voice.
+Claude TurnSpeak is for people who can dictate prompts but want the agent to speak back when asked. It does not auto-read every chat. It uses built-in macOS voices by default and can use local neural TTS (MLX-Audio) or OpenAI TTS for a more natural voice.
 
 This plugin is intentionally **on-demand by default**. Installing it does not register Claude hooks, change Codex `notify`, or make every chat start talking.
 
 ## Requirements
 
-- macOS
+- macOS (Apple Silicon)
 - Node.js 20+
-- Codex and/or Claude Code installed
+- Claude Code installed
 - OpenAI API key optional; only needed for OpenAI TTS
 
 ## Quick Start
 
-Paste this repo link to your agent and say:
-
-```text
-Set this up: https://github.com/cobibean/codex-read-aloud
-```
-
-Or run it yourself:
+### From Local Clone (Recommended)
 
 ```bash
-git clone https://github.com/cobibean/codex-read-aloud.git ~/plugins/codex-read-aloud
-cd ~/plugins/codex-read-aloud
+git clone https://github.com/haiggoh/claude-turn-speak.git ~/ClaudeWorkspace/claude-turn-speak
+cd ~/ClaudeWorkspace/claude-turn-speak
 node scripts/setup.mjs auto
 ```
 
-Then invoke it from a chat by asking your agent to use Codex Read Aloud, or run one of the on-demand commands below.
+This installs the plugin and creates stable CLI wrappers:
+- `speak-last` — read newest completed Claude response
+- `turn-speak` — extended CLI with project/session selection
 
-Optional test:
+### From GitHub (After Publication)
 
 ```bash
-node scripts/speak-text.mjs "Codex Read Aloud is installed."
+claude plugin marketplace add haiggoh/claude-turn-speak
+claude plugin install claude-turn-speak@claude-turn-speak
+```
+
+Then invoke in chat:
+
+```text
+Use TurnSpeak to read that answer aloud.
+```
+
+### Optional Test
+
+```bash
+speak-last
+# or
+turn-speak latest
 ```
 
 To stop playback while it is talking:
 
 ```bash
-node scripts/stop.mjs
+turn-speak stop
 ```
 
 For a non-terminal stop button on macOS:
 
 ```bash
-node scripts/install-stop-app.mjs
+node scripts/install-launcher-apps.mjs
 ```
 
-That creates `~/Applications/Stop Codex Read Aloud.app`, which can be launched from Spotlight, Raycast, Alfred, or bound to a hotkey in your launcher.
+That creates:
+- `~/Applications/Speak Last Claude Turn.app` — reads last response
+- `~/Applications/Stop Claude TurnSpeak.app` — stops playback
 
-## Emergency Cleanup For Early Installs
+Both work from Spotlight, Raycast, Alfred, or launcher hotkeys.
 
-Versions before `0.1.1` briefly experimented with automatic Codex/Claude hooks. Current versions are on-demand only. If you installed an early version and Codex or Claude starts speaking without being asked, run:
+## High Quality Local Voice (MLX)
+
+The default uses your system-selected macOS voice and needs no API key. For a more natural local voice, install MLX-Audio and download models:
 
 ```bash
-cd ~/plugins/codex-read-aloud
-git pull --ff-only
-node scripts/emergency-disable-codex-auto.mjs
+# One-time MLX runtime setup
+node scripts/install-mlx-runtime.mjs
+
+# Download models (requires free-agents repo)
+~/ClaudeWorkspace/free-agents/install/download-models.sh \
+  --catalog ~/ClaudeWorkspace/claude-turn-speak/acquisition/model-catalog.turn-speak-tts.psv \
+  --select tts-kokoro-82m-bf16 \
+  --select tts-qwen3-06b-custom-8bit \
+  --select tts-qwen3-17b-custom-bf16 \
+  --select tts-chatterbox-turbo-8bit
 ```
 
-Then fully quit and restart Codex or Claude Code. The cleanup removes stale Codex hook/cache/notify state and stops active playback. It does not remove Claude support from the repo.
+Then use:
 
-## High Quality Voice
+```bash
+turn-speak latest --provider mlx --model kokoro --voice af_heart
+```
 
-The default uses your system-selected macOS voice and does not need an API key. For a more natural voice, store your OpenAI API key in macOS Keychain and enable OpenAI TTS.
+See [docs/MODELS.md](docs/MODELS.md) for hardware requirements per model.
 
-Do not paste your OpenAI API key into agent chat. Run this locally in your terminal:
+## OpenAI TTS (Optional)
+
+For cloud TTS, store your OpenAI API key in macOS Keychain:
 
 ```bash
 node scripts/store-openai-key.mjs
 node scripts/set-quality.mjs openai-natural
 ```
 
-The key is stored in Keychain under `codex-read-aloud-openai-api-key`. It is not written to this repo, Codex config, Claude settings, or a `.env` file.
-
-## Use With Codex
-
-```bash
-node scripts/setup.mjs codex
-node scripts/speak-latest-codex.mjs
-```
-
-Codex setup does not edit `~/.codex/config.toml`. `speak-latest-codex.mjs` is an on-demand command that reads the latest local Codex assistant message.
+The key is stored in Keychain under `claude-turn-speak-openai-api-key`. It is not written to this repo, Codex config, Claude settings, or a `.env` file.
 
 ## Use With Claude Code
 
-From a local clone:
-
-```bash
-node scripts/setup.mjs claude
-```
-
-From GitHub after this repo is public:
-
-```bash
-claude plugin marketplace add cobibean/codex-read-aloud
-claude plugin install codex-read-aloud@codex-read-aloud
-```
-
-Claude setup installs and enables the plugin so Claude can use its skill/instructions. It does not install a `Stop` hook, so Claude will not read every response automatically. Ask Claude to use Codex Read Aloud when you want speech.
+Claude setup installs and enables the plugin so Claude can use its skill/instructions. It does not install a `Stop` hook, so Claude will not read every response automatically. Ask Claude to use TurnSpeak when you want speech.
 
 Example:
 
 ```text
-Use Codex Read Aloud to read that answer aloud.
+Use TurnSpeak to read that answer aloud.
 ```
+
+For the explicit latest-response workflow:
+
+```bash
+speak-last
+# or
+turn-speak latest
+```
+
+This reads the newest completed main-agent text response from Claude Code's existing local transcript. It registers no hook, creates no response cache, and does not require another Claude turn.
 
 ## Commands
 
@@ -124,18 +138,19 @@ node scripts/speak-text.mjs "Text to read aloud"
 # Speak the latest local Codex assistant message on demand.
 node scripts/speak-latest-codex.mjs
 
-# Switch voices.
-node scripts/set-quality.mjs macos-modern
-node scripts/set-quality.mjs openai-natural
+# Speak the latest local Claude Code assistant message on demand.
+speak-last
+# or
+turn-speak latest
 
-# Stop current playback.
-node scripts/stop.mjs
+# Extended CLI with options.
+turn-speak latest --project "$PWD" --diagnose
+turn-speak latest --provider mlx --model kokoro --voice af_heart
+turn-speak latest --session <id>
+turn-speak stop
 
-# Disable stale auto-read state from early releases.
-node scripts/emergency-disable-codex-auto.mjs
-
-# Install a Spotlight/Raycast/Alfred-launchable stop app.
-node scripts/install-stop-app.mjs
+# Install macOS launcher apps.
+node scripts/install-launcher-apps.mjs
 
 # Check setup.
 node scripts/doctor.mjs
@@ -145,7 +160,6 @@ npm test
 
 # Run maintainer validation when Codex and Claude validators are installed.
 npm run validate:maintainer
-
 ```
 
 ## Configuration
@@ -178,51 +192,86 @@ Default settings:
 }
 ```
 
-`provider: "macos"` uses the built-in macOS `say` command. `voice: "system"` does not pass a voice override, so macOS uses the user's selected system voice. `voice: "auto"` picks the first installed voice from `voicePreference`. `provider: "openai"` uses OpenAI text-to-speech and is much more natural for longer replies.
+### Provider Options
+
+- `provider: "macos"` — built-in macOS `say` command (default). Text passed via stdin for privacy.
+- `provider: "mlx"` — local MLX-Audio neural TTS (requires `install-mlx-runtime.mjs` and models)
+- `provider: "openai"` — OpenAI TTS (requires API key)
+
+### Voice Options
+
+- `voice: "system"` — uses your selected macOS system voice
+- `voice: "auto"` — picks first available from `voicePreference`
+- `voice: "Shelley (English (US))"` — explicit voice name
+
+### MLX Model Options
+
+- `--model kokoro` — Kokoro 82M BF16 (fast, ~450 MB RAM)
+- `--model qwen3-06b` — Qwen3-TTS 0.6B 8-bit (balanced, ~1.8 GB RAM)
+- `--model qwen3-17b` — Qwen3-TTS 1.7B BF16 (quality, ~4.2 GB RAM)
+- `--model chatterbox` — Chatterbox Turbo 8-bit (expressive, ~900 MB RAM)
+
+### Other Settings
+
+- `maxCharacters` — truncate long responses (default 3000)
+- `includeCodeBlocks` — speak fenced code blocks (default false)
+- `stopPrevious` — stop prior playback before new (default true)
 
 ## Presets
 
-- `macos-modern`: free, local, system-selected Apple voice
-- `macos-auto`: free, local, tries newer named Apple voices
-- `macos-calm`: free, local, alternate Apple voice
-- `macos-bright`: free, local, a little faster and clearer
-- `openai-natural`: best default OpenAI TTS preset
-- `openai-calm`: slower OpenAI TTS preset
-
 ```bash
-node scripts/set-quality.mjs openai-natural
+node scripts/set-quality.mjs macos-modern   # free, local, system Apple voice
+node scripts/set-quality.mjs macos-auto     # free, local, tries newer voices
+node scripts/set-quality.mjs macos-calm     # free, local, alternate voice
+node scripts/set-quality.mjs macos-bright   # free, local, faster/clearer
+node scripts/set-quality.mjs openai-natural # best OpenAI TTS preset
+node scripts/set-quality.mjs openai-calm    # slower OpenAI TTS preset
 ```
 
 ## Agent Invocation
 
-After installation, invoke it in a chat with something like:
+After installation, invoke in chat with:
 
 ```text
-Use Codex Read Aloud to read your answer aloud.
+Use TurnSpeak to read your answer aloud.
 ```
 
-Agents should run `node scripts/speak-text.mjs` with the text to speak, or `node scripts/speak-latest-codex.mjs` for the newest Codex response.
+Agents should run:
+- `node scripts/speak-text.mjs` with text to speak
+- `speak-last` or `turn-speak latest` for newest Claude response
+- `turn-speak latest --provider mlx --model kokoro` for local neural TTS
 
-To stop playback, agents should run:
+To stop playback:
 
 ```bash
-node scripts/stop.mjs
+turn-speak stop
 ```
 
-For users who want a quick stop action outside chat, agents should offer:
+## Documentation
 
-```bash
-node scripts/install-stop-app.mjs
-```
-
-Then the user can launch `Stop Codex Read Aloud` from Spotlight/Raycast/Alfred or bind it to a launcher hotkey.
-
-See [AGENTS.md](AGENTS.md). It is written for coding agents so a user can paste the repo link and say "set this up".
+- [Privacy](docs/PRIVACY.md) — What data is read, what leaves your machine
+- [Offline Playback](docs/OFFLINE.md) — Network-disabled verification
+- [Models](docs/MODELS.md) — Hardware requirements per model
+- [Tournament Results](docs/TOURNAMENT_RESULTS.md) — Model selection rationale
+- [Development](docs/DEVELOPMENT.md) — Architecture and contribution guide
 
 ## Privacy
 
 See [docs/PRIVACY.md](docs/PRIVACY.md).
 
+Key guarantees:
+- No cloud TTS in default path
+- No telemetry
+- No automatic speech
+- No hooks by default
+- No passive response cache
+- Response text not in process arguments (stdin for `say`)
+- Works offline after model download
+
+## Upstream
+
+This is a product fork of [codex-read-aloud](https://github.com/cobibean/codex-read-aloud) (MIT). The upstream-compatible changes are in branch `feature/native-claude-latest-readback` and submitted as PR #1. See [NOTICE.md](NOTICE.md) for attribution.
+
 ## Notes
 
-This is on-demand read aloud, not streaming speech. Codex latest-response mode reads the local session log only when you run the command.
+This is on-demand read aloud, not streaming speech. It reads the local transcript only when you run the command.

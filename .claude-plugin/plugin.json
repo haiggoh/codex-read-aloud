@@ -1,18 +1,19 @@
 {
-  "name": "codex-read-aloud",
-  "version": "0.1.7",
-  "description": "Read Codex and Claude Code assistant replies aloud on demand on macOS.",
+  "name": "claude-turn-speak",
+  "version": "0.2.0",
+  "description": "Read Claude Code assistant replies aloud on demand on macOS with local neural TTS.",
   "author": {
     "name": "Cobi"
   },
-  "homepage": "https://github.com/cobibean/codex-read-aloud",
-  "repository": "https://github.com/cobibean/codex-read-aloud",
+  "homepage": "https://github.com/haiggoh/codex-read-aloud",
+  "repository": "https://github.com/haiggoh/codex-read-aloud",
   "license": "MIT",
   "keywords": [
     "tts",
     "speech",
     "accessibility",
-    "codex",
-    "claude-code"
+    "claude-code",
+    "mlx-audio",
+    "neural-tts"
   ]
 }

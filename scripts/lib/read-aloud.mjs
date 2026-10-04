@@ -158,14 +158,35 @@ export function prepareSpeechText(text, config = readConfig()) {
     output = output.replace(/```[\s\S]*?```/g, " Code block omitted. ");
   }
 
+  // Normalize Markdown for speech
   output = output
+    // Images: remove entirely (no alt text in speech)
     .replace(/!\[[^\]]*]\([^)]*\)/g, "")
+    // Links: keep link text, drop URL
     .replace(/\[([^\]]+)]\([^)]*\)/g, "$1")
+    // Inline code: keep text, drop backticks
     .replace(/`([^`]+)`/g, "$1")
+    // Headings: remove # markers
     .replace(/^#{1,6}\s+/gm, "")
+    // Blockquotes: remove > markers
     .replace(/^>\s?/gm, "")
+    // List markers: remove - * + at line start
     .replace(/^\s*[-*+]\s+/gm, "")
-    .replace(/\s+/g, " ")
+    // Numbered lists: remove "1. " etc.
+    .replace(/^\s*\d+\.\s+/gm, "")
+    // Horizontal rules: replace with pause indicator
+    .replace(/^---+$/gm, " Section break. ")
+    .replace(/^\*\*\*+$/gm, " Section break. ")
+    // Tables: convert to readable format (basic)
+    .replace(/\|([^|]+)\|([^|]+)\|/g, "$1, $2. ")
+    // Bold/italic: remove markers
+    .replace(/\*\*([^*]+)\*\*/g, "$1")
+    .replace(/\*([^*]+)\*/g, "$1")
+    .replace(/__([^_]+)__/g, "$1")
+    .replace(/_([^_]+)_/g, "$1")
+    // Collapse multiple spaces/newlines
+    .replace(/\n{3,}/g, "\n\n")
+    .replace(/[ \t]+/g, " ")
     .trim();
 
   const maxCharacters = Number(config.maxCharacters) || defaultConfig.maxCharacters;
@@ -174,6 +195,78 @@ export function prepareSpeechText(text, config = readConfig()) {
   }
 
   return output;
+}
+
+/**
+ * Split text into chunks at paragraph/sentence boundaries for long-turn handling.
+ * @param {string} text - Text to chunk
+ * @param {Object} options - Chunking options
+ * @param {number} [options.maxChunkCharacters=2000] - Maximum characters per chunk
+ * @param {number} [options.overlapCharacters=50] - Overlap between chunks for context
+ * @returns {string[]} Array of text chunks
+ */
+export function chunkText(text, options = {}) {
+  const maxChunkCharacters = options.maxChunkCharacters || 2000;
+  const overlapCharacters = Math.min(options.overlapCharacters || 50, maxChunkCharacters * 0.2);
+
+  if (text.length <= maxChunkCharacters) {
+    return [text];
+  }
+
+  const chunks = [];
+  let remaining = text;
+
+  while (remaining.length > 0) {
+    if (remaining.length <= maxChunkCharacters) {
+      chunks.push(remaining.trim());
+      break;
+    }
+
+    // Find best split point within maxChunkCharacters
+    let splitIndex = maxChunkCharacters;
+
+    // Prefer paragraph break (double newline)
+    const paragraphBreak = remaining.lastIndexOf("\n\n", maxChunkCharacters);
+    if (paragraphBreak > maxChunkCharacters * 0.5) {
+      splitIndex = paragraphBreak + 2; // Include the newlines
+    } else {
+      // Fall back to sentence boundary (. ? !)
+      const sentenceEnds = [". ", "? ", "! "];
+      let bestSentence = -1;
+      for (const end of sentenceEnds) {
+        const idx = remaining.lastIndexOf(end, maxChunkCharacters);
+        if (idx > bestSentence) {
+          bestSentence = idx + end.length;
+        }
+      }
+      if (bestSentence > maxChunkCharacters * 0.5) {
+        splitIndex = bestSentence;
+      } else {
+        // Fall back to clause boundary (, ;)
+        const clauseEnds = [", ", "; "];
+        let bestClause = -1;
+        for (const end of clauseEnds) {
+          const idx = remaining.lastIndexOf(end, maxChunkCharacters);
+          if (idx > bestClause) {
+            bestClause = idx + end.length;
+          }
+        }
+        if (bestClause > maxChunkCharacters * 0.3) {
+          splitIndex = bestClause;
+        }
+        // Otherwise hard split at maxChunkCharacters
+      }
+    }
+
+    const chunk = remaining.slice(0, splitIndex).trim();
+    chunks.push(chunk);
+
+    // Move forward with overlap for context continuity
+    const nextStart = Math.max(0, splitIndex - overlapCharacters);
+    remaining = remaining.slice(nextStart).trimStart();
+  }
+
+  return chunks;
 }
 
 export async function speakText(text, config = readConfig()) {
@@ -333,12 +426,17 @@ function speakWithMacOS(text, config) {
   if (config.rate) {
     args.push("-r", String(config.rate));
   }
-  args.push(text);
+  // Use stdin for text input (privacy: text not in process arguments)
+  args.push("-f", "/dev/stdin");
 
   const child = spawn("say", args, {
     detached: true,
-    stdio: "ignore"
+    stdio: ["pipe", "ignore", "ignore"]
   });
+
+  child.stdin.write(text);
+  child.stdin.end();
+
   child.on("error", (error) => warn(`say failed: ${error.message}`));
   child.unref();
 

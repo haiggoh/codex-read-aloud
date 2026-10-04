@@ -1,0 +1,16 @@
+# Claude TurnSpeak local TTS model-audition catalogue
+#
+# Schema:
+# alias|label|repo|revision|subdir|size_GB|group|status|include_patterns|runtime
+#
+# Acquisition does not imply runtime qualification or selection as the
+# permanent Claude TurnSpeak provider.
+#
+# Full pinned snapshots are intentionally acquired because the model,
+# tokenizer/processor, voice, and speech-tokenizer files are all runtime
+# components. No broad repository is shared between these entries.
+
+tts-kokoro-82m-bf16|Kokoro 82M BF16 — fast local TTS baseline|mlx-community/Kokoro-82M-bf16|a71e4d38b236d968966a2002c4c895dbd12b1c3c|Kokoro-82M-bf16|0.4|tts,turn-speak,kokoro,baseline|candidate||mlx-audio
+tts-qwen3-06b-custom-8bit|Qwen3-TTS 0.6B CustomVoice 8-bit — efficient neural TTS candidate|mlx-community/Qwen3-TTS-12Hz-0.6B-CustomVoice-8bit|049ef77fe8816b536193c0c25f9a214d17921282|Qwen3-TTS-12Hz-0.6B-CustomVoice-8bit|3.0|tts,turn-speak,qwen3,efficient|candidate||mlx-audio
+tts-qwen3-17b-custom-bf16|Qwen3-TTS 1.7B CustomVoice BF16 — quality-first neural TTS candidate|mlx-community/Qwen3-TTS-12Hz-1.7B-CustomVoice-bf16|52f4770fd9726457eae3d3b6aa92047a25a10776|Qwen3-TTS-12Hz-1.7B-CustomVoice-bf16|4.6|tts,turn-speak,qwen3,quality|candidate||mlx-audio
+tts-chatterbox-turbo-8bit|Chatterbox Turbo 8-bit — expressive voice-cloning TTS challenger|mlx-community/chatterbox-turbo-8bit|2f2e21a03863f86a1274d1060dcc188e7cde77e1|chatterbox-turbo-8bit|0.8|tts,turn-speak,chatterbox,expressive|candidate||mlx-audio

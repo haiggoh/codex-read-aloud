@@ -1,24 +1,26 @@
 {
-  "name": "codex-read-aloud",
+  "name": "claude-turn-speak",
   "owner": {
     "name": "Cobi"
   },
-  "description": "Read Codex and Claude Code assistant replies aloud on demand.",
+  "description": "Read Claude Code assistant replies aloud on demand with local neural TTS.",
   "metadata": {
-    "description": "Read Codex and Claude Code assistant replies aloud on demand."
+    "description": "Read Claude Code assistant replies aloud on demand with local neural TTS."
   },
-  "version": "0.1.7",
+  "version": "0.2.0",
   "plugins": [
     {
-      "name": "codex-read-aloud",
+      "name": "claude-turn-speak",
       "source": "./",
-      "description": "Speak assistant replies on demand with macOS speech or OpenAI TTS.",
-      "version": "0.1.7",
+      "description": "Speak assistant replies on demand with macOS speech, MLX local neural TTS, or OpenAI TTS.",
+      "version": "0.2.0",
       "category": "productivity",
       "tags": [
         "tts",
         "accessibility",
-        "macos"
+        "macos",
+        "mlx-audio",
+        "neural-tts"
       ]
     }
   ]

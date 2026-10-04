@@ -1,7 +1,7 @@
 {
-  "name": "codex-read-aloud",
-  "version": "0.1.7",
-  "description": "Read Codex and Claude Code assistant replies aloud on macOS.",
+  "name": "claude-turn-speak",
+  "version": "0.2.0",
+  "description": "Read Claude Code assistant replies aloud on demand on macOS with local neural TTS.",
   "type": "module",
   "license": "MIT",
   "private": false,
@@ -15,11 +15,12 @@
     "validate": "npm run test"
   },
   "keywords": [
-    "codex",
     "claude-code",
     "text-to-speech",
     "accessibility",
-    "macos"
+    "macos",
+    "mlx-audio",
+    "neural-tts"
   ],
   "engines": {
     "node": ">=20"

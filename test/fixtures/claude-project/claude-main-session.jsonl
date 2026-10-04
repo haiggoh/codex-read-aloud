@@ -1,0 +1,5 @@
+{"type":"user","isSidechain":false,"message":{"role":"user","content":"Please inspect the project."},"sessionId":"session-main","uuid":"user-1","timestamp":"2026-08-25T12:00:00.000Z"}
+{"type":"assistant","isSidechain":false,"message":{"role":"assistant","content":[{"type":"text","text":"I will inspect it."}]},"sessionId":"session-main","uuid":"assistant-1","timestamp":"2026-08-25T12:00:01.000Z"}
+{"type":"assistant","isSidechain":false,"message":{"role":"assistant","content":[{"type":"tool_use","id":"tool-1","name":"Read","input":{"file_path":"/tmp/example"}}]},"sessionId":"session-main","uuid":"assistant-2","timestamp":"2026-08-25T12:00:02.000Z"}
+{"type":"user","isSidechain":false,"message":{"role":"user","content":[{"type":"tool_result","tool_use_id":"tool-1","content":"example"}]},"sessionId":"session-main","uuid":"user-2","timestamp":"2026-08-25T12:00:03.000Z"}
+{"type":"assistant","isSidechain":false,"message":{"role":"assistant","content":[{"type":"text","text":"The inspection is complete."}]},"sessionId":"session-main","uuid":"assistant-3","timestamp":"2026-08-25T12:00:04.000Z"}
