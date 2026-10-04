@@ -108,6 +108,16 @@ Example:
 Use Codex Read Aloud to read that answer aloud.
 ```
 
+For the same explicit latest-response workflow available in Codex, run:
+
+```bash
+node scripts/speak-latest-claude.mjs
+```
+
+This reads the newest completed main-agent text response from Claude Code's
+existing local transcript. It registers no hook, creates no response cache,
+and does not require another Claude turn.
+
 ## Commands
 
 ```bash
@@ -123,6 +133,9 @@ node scripts/speak-text.mjs "Text to read aloud"
 
 # Speak the latest local Codex assistant message on demand.
 node scripts/speak-latest-codex.mjs
+
+# Speak the latest local Claude Code assistant message on demand.
+node scripts/speak-latest-claude.mjs
 
 # Switch voices.
 node scripts/set-quality.mjs macos-modern
@@ -201,7 +214,7 @@ After installation, invoke it in a chat with something like:
 Use Codex Read Aloud to read your answer aloud.
 ```
 
-Agents should run `node scripts/speak-text.mjs` with the text to speak, or `node scripts/speak-latest-codex.mjs` for the newest Codex response.
+Agents should run `node scripts/speak-text.mjs` with the text to speak, `node scripts/speak-latest-codex.mjs` for the newest Codex response, or `node scripts/speak-latest-claude.mjs` for the newest completed main-agent Claude response.
 
 To stop playback, agents should run:
 

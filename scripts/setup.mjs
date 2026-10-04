@@ -34,7 +34,8 @@ process.stdout.write("  node scripts/store-openai-key.mjs\n");
 process.stdout.write("  node scripts/set-quality.mjs openai-natural\n\n");
 process.stdout.write("Use on demand with:\n");
 process.stdout.write("  node scripts/speak-text.mjs \"Text to read aloud\"\n");
-process.stdout.write("  node scripts/speak-latest-codex.mjs\n\n");
+process.stdout.write("  node scripts/speak-latest-codex.mjs\n");
+process.stdout.write("  node scripts/speak-latest-claude.mjs\n\n");
 process.stdout.write("This setup does not enable automatic read-aloud hooks.\n");
 
 function setupClaude() {

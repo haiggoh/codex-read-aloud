@@ -54,6 +54,7 @@ This plugin supports both Codex and Claude Code, but it must not be automatic by
    ```bash
    node scripts/speak-text.mjs "Text to read aloud"
    node scripts/speak-latest-codex.mjs
+   node scripts/speak-latest-claude.mjs
    node scripts/stop.mjs
    node scripts/install-stop-app.mjs
    ```
@@ -84,6 +85,7 @@ node scripts/set-quality.mjs macos-calm
 node scripts/set-quality.mjs openai-natural
 node scripts/speak-text.mjs "Text to read aloud"
 node scripts/speak-latest-codex.mjs
+node scripts/speak-latest-claude.mjs
 node scripts/stop.mjs
 node scripts/install-stop-app.mjs
 node scripts/emergency-disable-codex-auto.mjs
