@@ -351,7 +351,7 @@ function isClaudeUserPrompt(record) {
   });
 }
 
-function extractClaudeContent(content) {
+export function extractClaudeContent(content) {
   if (typeof content === "string") {
     return {
       text: content,
@@ -381,6 +381,9 @@ function extractClaudeContent(content) {
 
     if (part.type === "text" && typeof part.text === "string") {
       textParts.push(part.text);
+    } else if (part.type === "thinking" && typeof part.thinking === "string") {
+      // Include thinking content for speech
+      textParts.push(part.thinking);
     }
   }
 
