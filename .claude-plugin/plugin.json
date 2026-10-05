@@ -1,6 +1,6 @@
 {
   "name": "claude-turn-speak",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Read Claude Code assistant replies aloud on demand on macOS with local neural TTS.",
   "author": {
     "name": "Cobi"

@@ -61,6 +61,14 @@ Speak the latest detected Codex assistant response on demand:
 node ~/plugins/codex-read-aloud/scripts/speak-latest-codex.mjs
 ```
 
+Speak the latest **completed** Claude Code turn on demand:
+
+```bash
+node ~/plugins/codex-read-aloud/scripts/speak-latest-claude.mjs
+```
+
+**Note:** This reads from the transcript file (`~/.claude/projects/<project>/*.jsonl`), which is written **after each turn completes**. It will not speak the current in-progress turn — only the last *completed* turn. During an active turn, the current response hasn't been written to the transcript yet.
+
 Stop current playback:
 
 ```bash

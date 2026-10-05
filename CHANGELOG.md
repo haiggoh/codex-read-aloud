@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.1] - 2026-10-05
+
+### Changed
+- **Skill description**: Updated `speak-latest-claude.mjs` description to clarify it reads **completed** Claude Code turns from transcript (written after each turn completes), not in-progress turns
+- **AGENTS.md**: Added note explaining transcript is written after turn completion
+
 ## [0.2.0] - 2026-10-04
 
 ### Added

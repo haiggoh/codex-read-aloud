@@ -59,6 +59,8 @@ This plugin supports both Codex and Claude Code, but it must not be automatic by
    node scripts/install-stop-app.mjs
    ```
 
+**Note:** `speak-latest-claude.mjs` reads the transcript file (`~/.claude/projects/<project>/*.jsonl`), which is written **after each turn completes**. It will not speak the current in-progress turn — only the last *completed* turn.
+
    Tell the user they can ask "stop read aloud" while it is talking, and the agent should run `node scripts/stop.mjs`. For a non-terminal stop action, offer `node scripts/install-stop-app.mjs`; it creates `~/Applications/Stop Codex Read Aloud.app` for Spotlight/Raycast/Alfred or launcher hotkeys.
 
 ## Safety Rules
