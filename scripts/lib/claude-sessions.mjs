@@ -145,7 +145,10 @@ export function getLatestClaudeAssistantMessage(
   const lines = readFileSync(sessionFile, "utf8").split(/\r?\n/);
   let candidate = null;
 
-  for (let index = 0; index < lines.length; index += 1) {
+  // Iterate from the END of the file to find the LAST completed assistant message.
+  // This avoids the problem where a trailing user prompt (current turn) would
+  // reset the candidate found from earlier in the file.
+  for (let index = lines.length - 1; index >= 0; index -= 1) {
     const line = lines[index].trim();
 
     if (!line) {
@@ -158,9 +161,7 @@ export function getLatestClaudeAssistantMessage(
       record = JSON.parse(line);
     } catch {
       // A concurrently written final JSONL line may be incomplete.
-      // Invalidate earlier prose so the caller retries instead of
-      // replaying a response from before the unfinished record.
-      candidate = null;
+      // Skip and continue searching backwards.
       continue;
     }
 
@@ -173,8 +174,8 @@ export function getLatestClaudeAssistantMessage(
       continue;
     }
 
+    // Skip user prompts - we're looking for the last COMPLETED assistant message
     if (isClaudeUserPrompt(record)) {
-      candidate = null;
       continue;
     }
 
@@ -190,27 +191,25 @@ export function getLatestClaudeAssistantMessage(
       record?.error ||
       record?.apiErrorStatus
     ) {
-      candidate = null;
       continue;
     }
 
     const content = record.message.content;
     const extracted = extractClaudeContent(content);
 
-    // A later tool-use record means the turn has not yet produced its
+    // A tool-use record means the turn has not yet produced its
     // subsequent final prose. Do not replay an earlier progress message.
     if (extracted.hasToolUse) {
-      candidate = null;
       continue;
     }
 
-    // Thinking, metadata, and other non-text assistant records do not
-    // supersede a completed text response within the same prompt.
+    // Must have some text content (text or thinking)
     if (!extracted.text.trim()) {
       continue;
     }
 
-    candidate = {
+    // Found the latest completed assistant message!
+    return {
       key: messageKey(sessionFile, index, extracted.text),
       line: index + 1,
       timestamp: record.timestamp || null,
@@ -220,7 +219,8 @@ export function getLatestClaudeAssistantMessage(
     };
   }
 
-  return candidate;
+  // No valid completed assistant message found
+  return null;
 }
 
 /**
