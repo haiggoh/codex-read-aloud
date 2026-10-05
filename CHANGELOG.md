@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.3] - 2026-10-05
+
+### Fixed
+- **Claude transcript search**: Changed `getLatestClaudeAssistantMessage()` to iterate from END of transcript backwards instead of forwards. This fixes a bug where a trailing user prompt (the current in-progress turn) would reset the candidate found from earlier completed turns. Now correctly finds the last COMPLETED assistant message regardless of trailing user prompts in the transcript.
+- **Claude transcript extraction**: Fixed `extractClaudeContent()` to handle `thinking` type content in addition to `text` type. Many Claude Opus 5 responses include `thinking` content instead of or in addition to `text` content, which was being skipped entirely, causing the function to return empty text for valid assistant messages.
+
 ## [0.2.2] - 2026-10-05
 
 ### Fixed

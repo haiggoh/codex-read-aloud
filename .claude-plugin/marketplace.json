@@ -7,13 +7,13 @@
   "metadata": {
     "description": "Read Claude Code assistant replies aloud on demand with local neural TTS."
   },
-  "version": "0.2.2",
+  "version": "0.2.3",
   "plugins": [
     {
       "name": "claude-turn-speak",
       "source": "./",
       "description": "Speak assistant replies on demand with macOS speech, MLX local neural TTS, or OpenAI TTS.",
-      "version": "0.2.2",
+      "version": "0.2.3",
       "category": "productivity",
       "tags": [
         "tts",
