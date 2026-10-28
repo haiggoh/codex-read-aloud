@@ -203,7 +203,7 @@ export function getLatestClaudeAssistantMessage(
       continue;
     }
 
-    // Must have some text content (text or thinking)
+    // Must have some visible prose (thinking-only records extract as empty)
     if (!extracted.text.trim()) {
       continue;
     }
@@ -379,11 +379,11 @@ export function extractClaudeContent(content) {
       continue;
     }
 
+    // Only visible prose is spoken. Thinking is hidden reasoning, never read aloud: a
+    // thinking-only record extracts as empty text, and the backward scan in
+    // getLatestClaudeAssistantMessage skips empty records to reach the prose before it.
     if (part.type === "text" && typeof part.text === "string") {
       textParts.push(part.text);
-    } else if (part.type === "thinking" && typeof part.thinking === "string") {
-      // Include thinking content for speech
-      textParts.push(part.thinking);
     }
   }
 
