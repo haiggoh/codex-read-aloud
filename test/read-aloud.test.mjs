@@ -214,7 +214,9 @@ test("getLatestClaudeAssistantMessage ignores sidechain responses", () => {
   assert.equal(message.rawText, "Main-agent response.");
 });
 
-test("getLatestClaudeAssistantMessage rejects an API-error ending", () => {
+// Decided 2026-10-28 (owner): past an API-error ending, speak the last COMPLETED answer —
+// never the error record itself. (The pre-0.2.3 contract returned nothing here.)
+test("getLatestClaudeAssistantMessage speaks the last completed answer past an API-error ending", () => {
   const fixture = join(
     import.meta.dirname,
     "fixtures",
@@ -226,7 +228,7 @@ test("getLatestClaudeAssistantMessage rejects an API-error ending", () => {
     maxCharacters: 1000
   });
 
-  assert.equal(message, null);
+  assert.equal(message.rawText, "Earlier completed response.");
 });
 
 test("findLatestClaudeSessionFile ignores nested subagent logs", () => {
@@ -259,7 +261,9 @@ test("findLatestClaudeSessionFile ignores nested subagent logs", () => {
   );
 });
 
-test("getLatestClaudeAssistantMessage rejects a prior answer after a newer unanswered prompt", () => {
+// Decided 2026-10-28 (owner): a newer prompt does not hide the last completed answer. This is
+// what makes in-session "read your last reply aloud" work — that request IS the newest prompt.
+test("getLatestClaudeAssistantMessage speaks the last completed answer past a newer prompt", () => {
   const dir = mkdtempSync(
     join(tmpdir(), "claude-read-aloud-unanswered-")
   );
@@ -294,7 +298,7 @@ test("getLatestClaudeAssistantMessage rejects a prior answer after a newer unans
     maxCharacters: 1000
   });
 
-  assert.equal(message, null);
+  assert.equal(message.rawText, "Previous completed response.");
 });
 
 test("getLatestClaudeAssistantMessage preserves text across non-text assistant metadata", () => {

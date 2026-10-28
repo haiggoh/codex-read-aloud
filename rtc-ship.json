@@ -7,6 +7,8 @@
   "manifest": ".claude-plugin/plugin.json",
   "changelog": "CHANGELOG.md",
 
+  "_comment_tests": "No pytest suite: the gate runs the node suite (node --test is file-parallel by default). The CLI tests run in a temp HOME with DRY_RUN=1, so the gate never reads real transcripts or plays audio (2026-10-28).",
+  "test_cmd": "npm test",
 
 
   "refresh_plugin": "claude-turn-speak"

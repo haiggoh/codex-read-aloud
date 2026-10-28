@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.4] - 2026-10-28
+
+### Fixed
+- **Thinking is never read aloud**: 0.2.2 made `extractClaudeContent()` include `thinking` blocks in the spoken text, so a trailing thinking-only record was spoken. Only visible prose is spoken now; the 0.2.3 backward scan skips the empty thinking-only records, which is what 0.2.2 actually needed.
+- **The tests no longer touch the real machine**: the CLI tests spawned `turn-speak` with the real `HOME` and hard-coded checkout paths, so `latest --diagnose` read and PLAYED the operator's latest reply. Every spawn now runs in an empty temporary home with `CODEX_READ_ALOUD_DRY_RUN=1`.
+- The two unit tests that still expected the pre-0.2.3 "say nothing" contract now pin the decided behaviour: past a newer prompt or an API-error ending, the last completed answer is spoken.
+- `package.json` version caught up with the plugin manifests.
+
+### Changed
+- The ship gate (`rtc-ship.json` `test_cmd`) now runs `npm test`; `node --test` runs the files in parallel.
+
 ## [0.2.3] - 2026-10-05
 
 ### Fixed
